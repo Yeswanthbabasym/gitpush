@@ -21,6 +21,15 @@ steps:
   inputs:
     restoreSolution: '$(solution)'
 
+- task: SonarCloudPrepare@3
+  inputs:
+    SonarQube: 'Sonarcloud'
+    organization: 'azuredevopstesting'
+    scannerMode: 'dotnet'
+    projectKey: 'azuredevopstesting_azuredevopsclasses'
+    projectName: '.Netproject'
+
+
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
@@ -28,7 +37,8 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
-- task: VSTest@2
+- task: SonarCloudAnalyze@3
+
+- task: SonarCloudPublish@3
   inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+    pollingTimeoutSec: '300'
